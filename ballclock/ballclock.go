@@ -41,8 +41,7 @@ func GetJsonQueues() jsonQueues{
 	new5Min := reverseQueue(&fiveMinuteQueue)
 	newHour := reverseQueue(&hourQueue)
 
-	json := jsonQueues{Min: newMin, FiveMin:new5Min, Hour:newHour,Main:mainQueue}
-	return json
+	return jsonQueues{Min: newMin, FiveMin:new5Min, Hour:newHour,Main:mainQueue}
 }
 
 func reverseQueue(q *[]int) []int{
