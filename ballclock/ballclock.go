@@ -11,7 +11,7 @@ var mainQueue, minuteQueue, fiveMinuteQueue, hourQueue []int
 var Days int
 var Balls int
 
-type jsonQueues struct {
+type JsonQueues struct {
 	Min 	[]int	`json:"Min"`
 	FiveMin []int	`json:"FiveMin"`
 	Hour 	[]int	`json:"Hour"`
@@ -35,13 +35,13 @@ func init() {
 	Days = 0
 }
 
-func GetJsonQueues() jsonQueues{
+func GetJsonQueues() JsonQueues{
 
 	newMin := reverseQueue(&minuteQueue)
 	new5Min := reverseQueue(&fiveMinuteQueue)
 	newHour := reverseQueue(&hourQueue)
 
-	return jsonQueues{Min: newMin, FiveMin:new5Min, Hour:newHour,Main:mainQueue}
+	return JsonQueues{Min: newMin, FiveMin:new5Min, Hour:newHour,Main:mainQueue}
 }
 
 func reverseQueue(q *[]int) []int{
