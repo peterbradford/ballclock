@@ -8,12 +8,20 @@ import (
 	"strconv"
 )
 
+var balls int
+
 func checkArgs() bool {
 	argsNoPath := os.Args[1:]
 	if len(argsNoPath) != 1 && len(argsNoPath) != 2 {
 		fmt.Println("too many or too few args.\nUsage: 30\nOr\nUsage: 30 325\nWhere first number is number of balls\nand second number is an optional number of minutes to run")
 		os.Exit(1)
 	}
+	b, err := strconv.Atoi(argsNoPath[0])
+	if err != nil {
+		fmt.Println("error with first argument, please make it an int")
+		os.Exit(2)
+	}
+	balls = b
 	return len(argsNoPath) == 2
 }
 
@@ -24,7 +32,7 @@ func timerMode() {
 		ballclock.PushMinute()
 	}
 	end := time.Since(start)
-	fmt.Printf("%v balls cycle after %v days.\nCompleted in %v milliseconds (%1.3f seconds)", ballclock.Balls, ballclock.Days/2, end.Nanoseconds()/int64(time.Millisecond), float64(end.Nanoseconds())/float64(int64(time.Second)))
+	fmt.Printf("%v balls cycle after %v days.\nCompleted in %v milliseconds (%1.3f seconds)", balls, ballclock.Days/2, end.Nanoseconds()/int64(time.Millisecond), float64(end.Nanoseconds())/float64(int64(time.Second)))
 }
 
 func clockMode() {
@@ -42,6 +50,7 @@ func clockMode() {
 
 func main() {
 	mode := checkArgs()
+	ballclock.Init2(balls)
 	if mode {
 		clockMode()
 	} else {
