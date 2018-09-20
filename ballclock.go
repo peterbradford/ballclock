@@ -8,7 +8,7 @@ import (
 	"strconv"
 )
 
-var balls int
+var Balls int
 
 func checkArgs() bool {
 	argsNoPath := os.Args[1:]
@@ -21,18 +21,19 @@ func checkArgs() bool {
 		fmt.Println("error with first argument, please make it an int")
 		os.Exit(2)
 	}
-	balls = b
+	Balls = b
+	ballclock.Balls = b
 	return len(argsNoPath) == 2
 }
 
 func timerMode() {
 	start := time.Now()
 	ballclock.PushMinute()
-	for !ballclock.IsOriginalPosition() {
+	for !ballclock.IsOriginalPosition(ballclock.MainQue) {
 		ballclock.PushMinute()
 	}
 	end := time.Since(start)
-	fmt.Printf("%v balls cycle after %v days.\nCompleted in %v milliseconds (%1.3f seconds)", balls, ballclock.Days/2, end.Nanoseconds()/int64(time.Millisecond), float64(end.Nanoseconds())/float64(int64(time.Second)))
+	fmt.Printf("%v balls cycle after %v days.\nCompleted in %v milliseconds (%1.3f seconds)", Balls, ballclock.Days/2, end.Nanoseconds()/int64(time.Millisecond), float64(end.Nanoseconds())/float64(int64(time.Second)))
 }
 
 func clockMode() {
@@ -50,7 +51,7 @@ func clockMode() {
 
 func main() {
 	mode := checkArgs()
-	ballclock.Init2(balls)
+	ballclock.Init2(Balls)
 	if mode {
 		clockMode()
 	} else {
