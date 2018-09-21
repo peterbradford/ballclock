@@ -2,21 +2,13 @@ package ballclock
 
 import (
 	"errors"
-	"strconv"
-	"fmt"
-	"os"
 )
 
 var mainQueue, minuteQueue, fiveMinuteQueue, hourQueue []int
 var Days int
 
-//var mainQueue MainQueue
-//var minuteQueue MinuteQueue
-//var fiveMainQueue MainQueue
-//var hourQueue MinuteQueue
-
 type JsonQueues struct {
-	Min 	[4]int	`json:"Min"`
+	Min 	[]int	`json:"Min"`
 	FiveMin []int	`json:"FiveMin"`
 	Hour 	[]int	`json:"Hour"`
 	Main 	[]int	`json:"Main"`
@@ -26,30 +18,18 @@ func Init2(balls int) {
 	for i := 0; i<balls; i++ {
 		mainQueue = append(mainQueue, i+1)
 	}
-	//minuteQueue = make([]int, 0)
-	minuteQueue = MinuteQueue{length:0}
+	minuteQueue = make([]int, 0)
 	fiveMinuteQueue = make([]int, 0)
 	hourQueue = make([]int, 0)
 	Days = 0
 }
 
 func GetJsonQueues() JsonQueues{
-
-	fmt.Printf("type: %t",minuteQueue);
-
-	//newMin := reverseQueue(minuteQueue)
-	newMin := reverseMinute(minuteQueue.vals)
+	newMin := reverseQueue(minuteQueue)
 	new5Min := reverseQueue(fiveMinuteQueue)
 	newHour := reverseQueue(hourQueue)
 
 	return JsonQueues{Min: newMin, FiveMin:new5Min, Hour:newHour,Main:mainQueue}
-}
-
-func reverseMinute(tmp [4]int) [4]int{
-	for left, right := 0, len(tmp)-1; left < right; left, right = left+1, right-1 {
-		tmp[left], tmp[right] = tmp[right], tmp[left]
-	}
-	return tmp
 }
 
 func reverseQueue(tmp []int) []int{
@@ -69,11 +49,11 @@ func IsOriginalPosition() bool{
 }
 
 func PushMinute() {
-	Pop(&mainQueue, mainQueue)
+	
 	x,_ := PopMain()
 
-	if minuteQueue.length == 4{
-		mainQueue = append(mainQueue, reverseMinute(minuteQueue)...)
+	if len(minuteQueue) == 4{
+		mainQueue = append(mainQueue, reverseQueue(minuteQueue)...)
 		minuteQueue = minuteQueue[:0]
 		PushFiveMinute(x)
 	} else {
@@ -111,9 +91,9 @@ func PopMain() (int, error){
 	}
 }
 
-func Pop(val *[]int, val2 []int){
-	fmt.Printf("type1: %T\ntype2: %T\n\n", val, val2)
-}
+// func Pop(val *[]int, val2 []int){
+// 	// fmt.Printf("type1: %T\ntype2: %T\n\n", val, val2)
+// }
 
 func PushDay(x int) {
 	Days += 1
