@@ -4,11 +4,14 @@ import (
 	"errors"
 )
 
-var mainQueue, minuteQueue, fiveMinuteQueue, hourQueue []int
+var mainQueue []int
+var minuteQueue [4]int
+var fiveMinuteQueue []int 
+var hourQueue []int
 var Days int
 
 type JsonQueues struct {
-	Min 	[]int	`json:"Min"`
+	Min 	[4]int	`json:"Min"`
 	FiveMin []int	`json:"FiveMin"`
 	Hour 	[]int	`json:"Hour"`
 	Main 	[]int	`json:"Main"`
@@ -18,14 +21,13 @@ func Init2(balls int) {
 	for i := 0; i<balls; i++ {
 		mainQueue = append(mainQueue, i+1)
 	}
-	minuteQueue = make([]int, 0)
 	fiveMinuteQueue = make([]int, 0)
 	hourQueue = make([]int, 0)
 	Days = 0
 }
 
 func GetJsonQueues() JsonQueues{
-	newMin := reverseQueue(minuteQueue)
+	newMin := reverseMinute(minuteQueue)
 	new5Min := reverseQueue(fiveMinuteQueue)
 	newHour := reverseQueue(hourQueue)
 
@@ -33,6 +35,13 @@ func GetJsonQueues() JsonQueues{
 }
 
 func reverseQueue(tmp []int) []int{
+	for left, right := 0, len(tmp)-1; left < right; left, right = left+1, right-1 {
+		tmp[left], tmp[right] = tmp[right], tmp[left]
+	}
+	return tmp
+}
+
+func reverseMinute(tmp [4]int) [4]int{
 	for left, right := 0, len(tmp)-1; left < right; left, right = left+1, right-1 {
 		tmp[left], tmp[right] = tmp[right], tmp[left]
 	}
@@ -53,7 +62,7 @@ func PushMinute() {
 	x,_ := PopMain()
 
 	if len(minuteQueue) == 4{
-		mainQueue = append(mainQueue, reverseQueue(minuteQueue)...)
+		mainQueue = append(mainQueue, reverseMinute(minuteQueue)...)
 		minuteQueue = minuteQueue[:0]
 		PushFiveMinute(x)
 	} else {
