@@ -293,10 +293,7 @@ func (mnq *MainQueue) init() {
  
 func (mnq *MainQueue) append(x int) {
 	mnq.length++
-	if mnq.backPointer+1 > Balls {
-		mnq.backPointer = 0
-	}
-
+	
 	if mnq.backPointer == 0 {					mnq.num0th = x
 	} else if mnq.backPointer == 1 {			mnq.num1th = x
 	} else if mnq.backPointer == 2 {			mnq.num2th = x
@@ -439,12 +436,11 @@ func (mnq *MainQueue) append(x int) {
 	} else if mnq.backPointer == 127 {			mnq.num127th = x
 	}
 
-	
-
-	//cycle to back to zero if it goes over the Balls amount,
-	
-	mnq.backPointer++
-	
+	if mnq.backPointer+1 >= Balls {
+		mnq.backPointer = 0
+	} else {
+		mnq.backPointer++
+	}
 }
 
 func (mnq *MainQueue) print() [128]int {
