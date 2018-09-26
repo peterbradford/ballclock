@@ -1,8 +1,5 @@
 package ballclock
 
-import (
-	"unsafe"
-)
 
 var MainQue *MainQueue
 var minuteQueue *MinuteQueue
@@ -41,10 +38,14 @@ func PushMinute() {
 	x = MainQue.pop()
 
 	if minuteQueue.length == 4{
-		MainQue.append(*(*int)(unsafe.Pointer(uintptr(minuteQueue.first) + minuteQueue.size*uintptr(3))))
-		MainQue.append(*(*int)(unsafe.Pointer(uintptr(minuteQueue.first) + minuteQueue.size*uintptr(2))))
-		MainQue.append(*(*int)(unsafe.Pointer(uintptr(minuteQueue.first) + minuteQueue.size*uintptr(1))))
-		MainQue.append(*(*int)(unsafe.Pointer(uintptr(minuteQueue.first) + minuteQueue.size*uintptr(0))))
+		MainQue.append(minuteQueue.array[3])
+		MainQue.append(minuteQueue.array[2])
+		MainQue.append(minuteQueue.array[1])
+		MainQue.append(minuteQueue.array[0])
+		// MainQue.append(*(*int)(unsafe.Pointer(uintptr(minuteQueue.first) + minuteQueue.size*uintptr(3))))
+		// MainQue.append(*(*int)(unsafe.Pointer(uintptr(minuteQueue.first) + minuteQueue.size*uintptr(2))))
+		// MainQue.append(*(*int)(unsafe.Pointer(uintptr(minuteQueue.first) + minuteQueue.size*uintptr(1))))
+		// MainQue.append(*(*int)(unsafe.Pointer(uintptr(minuteQueue.first) + minuteQueue.size*uintptr(0))))
 		
 		minuteQueue.length = 0
 		PushFiveMinute(x)
