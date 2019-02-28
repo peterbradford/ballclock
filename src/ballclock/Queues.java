@@ -21,7 +21,7 @@ class Queues {
     }
 
     boolean IsOriginalPosition()  {
-        var mainQIterator = mainQueue.iterator();
+        Iterator<Integer> mainQIterator = mainQueue.iterator();
         int i = 1;
         while (mainQIterator.hasNext()) {
             if (mainQIterator.next() != i) {
